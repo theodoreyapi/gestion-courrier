@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('phone')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('type')->comment('admin, courrier, dg, approprie');
+            $table->string('type')->comment('admin, courrier, dg, approprie')->default('admin');
+            $table->unsignedBigInteger('bureau_id')->nullable();
+            $table->foreign('bureau_id')->references('id_bureau')->on('bureau');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -48,5 +50,9 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['bureau_id']);
+            $table->dropColumn('bureau_id');
+        });
     }
 };

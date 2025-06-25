@@ -57,7 +57,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="widgets.html">
+                    <a class="nav-link menu-link {{ Request::is('categorie') ? 'active' : '' }}" href="{{ url('categorie') }}">
+                        <i class="ri-honour-line"></i> <span data-key="t-widgets">Catégorie traitement</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ Request::is('departement') ? 'active' : '' }}" href="{{ url('departement') }}">
                         <i class="ri-honour-line"></i> <span data-key="t-widgets">Département</span>
                     </a>
                 </li>

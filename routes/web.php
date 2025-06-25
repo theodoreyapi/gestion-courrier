@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\BureauController;
+use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\CourrierController;
+use App\Models\Bureau;
+use App\Models\Categorie;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,9 +21,13 @@ Route::get('/password', function () {
 });
 
 Route::get('add-courrier', function () {
-    return view('courriers.add-courrier');
+    $categorie = Categorie::all();
+    $bureau = Bureau::all();
+    return view('courriers.add-courrier', compact('categorie', 'bureau'));
 });
 Route::resource('courrier', CourrierController::class);
+Route::resource('departement', BureauController::class);
+Route::resource('categorie', CategorieController::class);
 
 
 Route::fallback(function () {

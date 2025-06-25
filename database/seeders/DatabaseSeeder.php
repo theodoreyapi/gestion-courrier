@@ -2,9 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Bureau;
+use App\Models\Categorie;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,9 +18,22 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+       $bureau = Bureau::create([
+            'nom_bureau' => 'SERVICE INFORMATIQUE',
+        ]);
+
+        Categorie::create([
+            'nom_categorie' => 'POUR DIFFUSION',
+        ]);
+
+        User::create([
+            'name' => 'Yapi',
+            'last_name' => 'théodore',
+            'email' => 'theodoreyapi@gmail.com',
+            'phone' => '0585831647',
+            'password' => Hash::make(1234567890),
+            'type' => 'admin',
+            'bureau_id' => $bureau->id_bureau,
         ]);
     }
 }

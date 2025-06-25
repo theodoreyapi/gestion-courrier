@@ -43,13 +43,7 @@
                 </div>
             </div>
 
-            <div class="alert alert-danger" role="alert">
-                This is <strong>Datatable</strong> page in wihch we have used <b>jQuery</b> with cnd link!
-            </div>
-
-            <div class="alert alert-success" role="alert">
-                This is <strong>Datatable</strong> page in wihch we have used <b>jQuery</b> with cnd link!
-            </div>
+            @include('layouts.status')
 
             <div class="row">
                 <div class="col-lg-12">

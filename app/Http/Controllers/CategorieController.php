@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bureau;
+use App\Models\Categorie;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-class BureauController extends Controller
+class CategorieController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $all = Bureau::all();
-        return view('departements.bureau', compact('all'));
+        $all = Categorie::all();
+        return view('categories.categorie', compact('all'));
     }
 
     /**
@@ -31,17 +31,17 @@ class BureauController extends Controller
     public function store(Request $request)
     {
         $roles = [
-            'libelle' => 'required|unique:bureau,nom_bureau',
+            'libelle' => 'required|unique:categorie,nom_categorie',
         ];
         $customMessages = [
-            'libelle.required' => "Veuillez saisir la désignation du département.",
+            'libelle.required' => "Veuillez saisir la désignation de la categorie.",
             'libelle.unique' => "Cette désignation existe deja. Veuillez saisir une autre.",
         ];
 
         $request->validate($roles, $customMessages);
 
-        $bureau = new Bureau();
-        $bureau->nom_bureau = $request->libelle;
+        $bureau = new Categorie();
+        $bureau->nom_categorie = $request->libelle;
         if ($bureau->save()) {
             return back()->with('succes',  "Vous avez ajouter " . $request->libelle);
         } else {
@@ -70,23 +70,23 @@ class BureauController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $bureau = Bureau::findOrFail($id);
+        $bureau = Categorie::findOrFail($id);
 
         $roles = [
             'libelle' => [
                 'required',
-                Rule::unique('bureau', 'nom_bureau')->ignore($bureau->id_bureau, 'id_bureau'),
+                Rule::unique('categorie', 'nom_categorie')->ignore($bureau->id_categorie, 'id_categorie'),
             ],
         ];
         $customMessages = [
-            'libelle.required' => "Veuillez saisir la désignation du département.",
+            'libelle.required' => "Veuillez saisir la désignation de la categorie.",
             'libelle.unique' => "Cette désignation existe deja. Veuillez saisir une autre.",
         ];
 
         $request->validate($roles, $customMessages);
 
-        if ($bureau->nom_bureau !== $request->libelle) {
-            $bureau->nom_bureau = $request->libelle;
+        if ($bureau->nom_categorie !== $request->libelle) {
+            $bureau->nom_categorie = $request->libelle;
         }
 
         if ($bureau->save()) {
@@ -101,7 +101,7 @@ class BureauController extends Controller
      */
     public function destroy(string $id)
     {
-        Bureau::findOrFail($id)->delete();
+        Categorie::findOrFail($id)->delete();
 
         return back()->with('succes', "La suppression a été effectué");
     }

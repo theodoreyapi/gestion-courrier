@@ -61,19 +61,29 @@
                             <h5 class="card-title mb-0">Initier un nouveau traitement</h5>
                         </div>
                         <div class="card-body">
-                            <form action="javascript:void(0);">
+                            <form action="{{ route('courrier.store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
                                 <div class="row g-4">
-                                    <div class="col-lg-4">
-                                        <h6 class="fw-semibold">Basic Select</h6>
+                                    <div class="col-lg-6">
+                                        <h6 class="fw-semibold">Destination</h6>
                                         <select class="js-example-basic-single" name="state">
-                                            <option value="AL">Alabama</option>
-                                            <option value="MA">Madrid</option>
-                                            <option value="TO">Toronto</option>
-                                            <option value="LO">Londan</option>
-                                            <option value="WY">Wyoming</option>
+                                            <option value="">Choisir...</option>
+                                            @foreach ($bureau as $bure)
+                                                <option value="{{ $bure->id_bureau }}">{{ $bure->nom_bureau }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-6">
+                                        <h6 class="fw-semibold">Traitement du courrier</h6>
+                                        <select class="js-example-basic-single" name="state">
+                                            <option value="">Choisir...</option>
+                                            @foreach ($categorie as $cate)
+                                                <option value="{{ $cate->id_categorie }}">{{ $cate->nom_categorie }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    {{-- <div class="col-lg-4">
                                         <h6 class="fw-semibold">Multi Select</h6>
                                         <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
                                             <optgroup label="UK">
@@ -97,100 +107,34 @@
                                                 <option value="Vancouver">Vancouver</option>
                                             </optgroup>
                                         </select>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <h6 class="fw-semibold">Ajax Select</h6>
-                                        <select class="js-example-data-array" name="state"></select>
-                                    </div>
+                                    </div> --}}
 
-                                    <div class="col-lg-4">
-                                        <h6 class="fw-semibold">Templating</h6>
-                                        <select class="form-control js-example-templating">
-                                            <optgroup label="Alaskan/Hawaiian Time Zone">
-                                                <option value="AK">Alaska</option>
-                                                <option value="HI">Hawaii</option>
-                                            </optgroup>
-                                            <optgroup label="Pacific Time Zone">
-                                                <option value="CA">California</option>
-                                                <option value="NV">Nevada</option>
-                                                <option value="OR">Oregon</option>
-                                                <option value="WA">Washington</option>
-                                            </optgroup>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <h6 class="fw-semibold">Selections Templating</h6>
-                                        <select class="form-control select-flag-templating">
-                                            <optgroup label="Alaskan/Hawaiian Time Zone">
-                                                <option value="AK">Alaska</option>
-                                                <option value="HI">Hawaii</option>
-                                            </optgroup>
-                                            <optgroup label="Pacific Time Zone">
-                                                <option value="CA">California</option>
-                                                <option value="NV">Nevada</option>
-                                                <option value="OR">Oregon</option>
-                                                <option value="WA">Washington</option>
-                                            </optgroup>
-                                        </select>
-                                    </div>
                                 </div>
+                                <br>
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3">
-                                            <label for="firstNameinput" class="form-label">First Name</label>
-                                            <input type="text" class="form-control" placeholder="Enter your firstname"
+                                            <label for="firstNameinput" class="form-label">Nature des pièces jointes</label>
+                                            <input type="text" class="form-control" placeholder="Nature"
                                                 id="firstNameinput">
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
-                                            <label for="lastNameinput" class="form-label">Last Name</label>
-                                            <input type="text" class="form-control" placeholder="Enter your lastname"
-                                                id="lastNameinput">
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="mb-3">
-                                            <label for="compnayNameinput" class="form-label">Company Name</label>
-                                            <input type="text" class="form-control" placeholder="Enter company name"
-                                                id="compnayNameinput">
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3">
-                                            <label for="phonenumberInput" class="form-label">Phone Number</label>
-                                            <input type="tel" class="form-control" placeholder="+(245) 451 45123"
-                                                id="phonenumberInput">
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3">
-                                            <label for="emailidInput" class="form-label">Email Address</label>
-                                            <input type="email" class="form-control" placeholder="example@gamil.com"
-                                                id="emailidInput">
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="mb-3">
-                                            <label for="address1ControlTextarea" class="form-label">Address</label>
-                                            <input type="text" class="form-control" placeholder="Address 1"
-                                                id="address1ControlTextarea">
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3">
-                                            <label for="citynameInput" class="form-label">City</label>
-                                            <input type="email" class="form-control" placeholder="Enter your city"
-                                                id="citynameInput">
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3">
-                                            <label for="ForminputState" class="form-label">State</label>
+                                            <label for="ForminputState" class="form-label">Délais de traitement du
+                                                courrier</label>
                                             <select id="ForminputState" class="form-select">
-                                                <option selected>Choose...</option>
-                                                <option>...</option>
+                                                <option selected>Choisir...</option>
+                                                <option value="EXTREME URGENCE">EXTREME URGENCE</option>
+                                                <option value="48H">48H</option>
+                                                <option value="72H">72H</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label for="lastNameinput" class="form-label">Notes</label>
+                                            <textarea class="form-control" name="notes" id="" cols="30" rows="10"></textarea>
                                         </div>
                                     </div>
                                     <div class="dropzone">
@@ -210,8 +154,7 @@
                                                     <div class="flex-shrink-0 me-3">
                                                         <div class="avatar-sm bg-light rounded">
                                                             <img data-dz-thumbnail class="img-fluid rounded d-block"
-                                                                src="assets/images/new-document.png"
-                                                                alt="Dropzone-Image" />
+                                                                src="assets/images/new-document.png" alt="Dropzone-Image" />
                                                         </div>
                                                     </div>
                                                     <div class="flex-grow-1">
@@ -220,8 +163,7 @@
                                                                 &nbsp;
                                                             </h5>
                                                             <p class="fs-13 text-muted mb-0" data-dz-size></p>
-                                                            <strong class="error text-danger"
-                                                                data-dz-errormessage></strong>
+                                                            <strong class="error text-danger" data-dz-errormessage></strong>
                                                         </div>
                                                     </div>
                                                     <div class="flex-shrink-0 ms-3">
