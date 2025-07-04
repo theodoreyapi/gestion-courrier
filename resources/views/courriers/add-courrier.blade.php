@@ -54,6 +54,8 @@
                 </div>
             </div>
 
+            @include('layouts.status')
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
@@ -61,12 +63,13 @@
                             <h5 class="card-title mb-0">Initier un nouveau traitement</h5>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('courrier.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('courrier.store') }}" method="POST" enctype="multipart/form-data"
+                                id="courrier-form">
                                 @csrf
                                 <div class="row g-4">
                                     <div class="col-lg-6">
                                         <h6 class="fw-semibold">Destination</h6>
-                                        <select class="js-example-basic-single" name="state">
+                                        <select required class="js-example-basic-single" name="destination">
                                             <option value="">Choisir...</option>
                                             @foreach ($bureau as $bure)
                                                 <option value="{{ $bure->id_bureau }}">{{ $bure->nom_bureau }}</option>
@@ -75,7 +78,7 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <h6 class="fw-semibold">Traitement du courrier</h6>
-                                        <select class="js-example-basic-single" name="state">
+                                        <select required class="js-example-basic-single" name="traitement">
                                             <option value="">Choisir...</option>
                                             @foreach ($categorie as $cate)
                                                 <option value="{{ $cate->id_categorie }}">{{ $cate->nom_categorie }}
@@ -108,23 +111,22 @@
                                             </optgroup>
                                         </select>
                                     </div> --}}
-
                                 </div>
                                 <br>
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="firstNameinput" class="form-label">Nature des pièces jointes</label>
-                                            <input type="text" class="form-control" placeholder="Nature"
-                                                id="firstNameinput">
+                                            <input required name="nature" type="text" class="form-control"
+                                                placeholder="Ex: Contrat, Facture, Rapport..." id="firstNameinput">
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="ForminputState" class="form-label">Délais de traitement du
                                                 courrier</label>
-                                            <select id="ForminputState" class="form-select">
-                                                <option selected>Choisir...</option>
+                                            <select name="delais" required id="ForminputState" class="form-select">
+                                                <option value="">Choisir...</option>
                                                 <option value="EXTREME URGENCE">EXTREME URGENCE</option>
                                                 <option value="48H">48H</option>
                                                 <option value="72H">72H</option>
@@ -134,50 +136,19 @@
                                     <div class="col-12">
                                         <div class="mb-3">
                                             <label for="lastNameinput" class="form-label">Notes</label>
-                                            <textarea class="form-control" name="notes" id="" cols="30" rows="10"></textarea>
+                                            <textarea placeholder="Ajoutez des notes ou des informations complémentaires ici..." class="form-control" name="notes"
+                                                id="" cols="30" rows="10"></textarea>
                                         </div>
                                     </div>
-                                    <div class="dropzone">
+                                    <label class="form-label fw-bold">Fichiers à joindre</label>
+                                    <div class="dropzone" id="file-dropzone">
                                         <div class="fallback">
-                                            <input name="file" type="file" multiple="multiple" />
-                                        </div>
-                                        <div class="dz-message needsclick">
-                                            <h4>Déposez les fichiers ici ou cliquez pour télécharger.</h4>
+                                            <input name="file[]" type="file" multiple />
                                         </div>
                                     </div>
-
-                                    <ul class="list-unstyled mb-0" id="dropzone-preview">
-                                        <li class="mt-2" id="dropzone-preview-list">
-                                            <!-- This is used as the file preview template -->
-                                            <div class="border rounded">
-                                                <div class="d-flex p-2">
-                                                    <div class="flex-shrink-0 me-3">
-                                                        <div class="avatar-sm bg-light rounded">
-                                                            <img data-dz-thumbnail class="img-fluid rounded d-block"
-                                                                src="assets/images/new-document.png" alt="Dropzone-Image" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-grow-1">
-                                                        <div class="pt-1">
-                                                            <h5 class="fs-14 mb-1" data-dz-name>
-                                                                &nbsp;
-                                                            </h5>
-                                                            <p class="fs-13 text-muted mb-0" data-dz-size></p>
-                                                            <strong class="error text-danger" data-dz-errormessage></strong>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-shrink-0 ms-3">
-                                                        <button data-dz-remove class="btn btn-sm btn-danger">
-                                                            Supprimer
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
                                     <br>
                                     <br>
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-12 mt-4">
                                         <div class="text-end">
                                             <button type="submit" class="btn btn-primary">Soumettre</button>
                                         </div>
@@ -188,6 +159,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 @endsection

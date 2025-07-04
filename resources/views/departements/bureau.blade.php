@@ -94,10 +94,13 @@
                                 <tbody>
                                     @foreach ($all as $item)
                                         <tr>
-                                            <td>{{ $item->nom_bureau }}</td>
+                                            <td> <strong>{{ $item->nom_bureau }}</strong></td>
                                             <td>
-                                                <span class="badge bg-success-subtle text-success">Active</span>
-                                                <span class="badge bg-danger-subtle text-danger">Inactive</span>
+                                                @if ($item->status_bureau == 'active')
+                                                    <span class="badge bg-success-subtle text-success">Active</span>
+                                                @else
+                                                    <span class="badge bg-danger-subtle text-danger">Inactive</span>
+                                                @endif
                                             </td>
                                             <td>
                                                 <a href="#" class="btn btn-soft-info btn-sm" data-bs-toggle="modal"

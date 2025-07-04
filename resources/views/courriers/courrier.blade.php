@@ -56,16 +56,13 @@
                             <table id="scroll-horizontal" class="table nowrap align-middle" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>SR No.</th>
-                                        <th>ID</th>
-                                        <th>Purchase ID</th>
-                                        <th>Title</th>
-                                        <th>User</th>
-                                        <th>Assigned To</th>
-                                        <th>Created By</th>
-                                        <th>Create Date</th>
-                                        <th>Status</th>
-                                        <th>Priority</th>
+                                        <th>Destination</th>
+                                        <th>Type de traitement</th>
+                                        <th>Nature</th>
+                                        <th>Initiateur</th>
+                                        <th>Date de création</th>
+                                        <th>Statut</th>
+                                        <th>Priorité</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -76,12 +73,20 @@
                                         <td>VLZ1400087402</td>
                                         <td><a href="tables-datatables.html#!">Post launch reminder/ post
                                                 list</a></td>
-                                        <td>Joseph Parker</td>
-                                        <td>Alexis Clarke</td>
-                                        <td>Joseph Parker</td>
                                         <td>03 Oct, 2021</td>
-                                        <td><span class="badge bg-info-subtle text-info">Re-open</span></td>
-                                        <td><span class="badge bg-danger">High</span></td>
+                                        <td>
+                                            <span class="badge bg-info-subtle text-info">Re-open</span>
+                                            <span class="badge bg-secondary-subtle text-secondary">On-Hold</span>
+                                            <span class="badge bg-warning-subtle text-warning">Inprogress</span>
+                                            <span class="badge bg-primary-subtle text-primary">Open</span>
+                                            <span class="badge bg-success-subtle text-success">New</span>
+                                            <span class="badge bg-danger-subtle text-danger">Closed</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-danger">High</span>
+                                            <span class="badge bg-success">Low</span>
+                                            <span class="badge bg-info">Medium</span>
+                                        </td>
                                         <td>
                                             <a href="#" class="btn btn-soft-dark btn-sm">
                                                 Voir
@@ -116,183 +121,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>02</td>
-                                        <td>VLZ-453</td>
-                                        <td>VLZ1400087425</td>
-                                        <td><a href="tables-datatables.html#!">Additional Calendar</a></td>
-                                        <td>Diana Kohler</td>
-                                        <td>Admin</td>
-                                        <td>Mary Rucker</td>
-                                        <td>05 Oct, 2021</td>
-                                        <td><span class="badge bg-secondary-subtle text-secondary">On-Hold</span>
-                                        </td>
-                                        <td><span class="badge bg-info">Medium</span></td>
-                                        <td>
-                                            <div class="dropdown d-inline-block">
-                                                <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="ri-more-fill align-middle"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li><a href="tables-datatables.html#!" class="dropdown-item"><i
-                                                                class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                            View</a></li>
-                                                    <li><a class="dropdown-item edit-item-btn"><i
-                                                                class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                            Edit</a></li>
-                                                    <li>
-                                                        <a class="dropdown-item remove-item-btn">
-                                                            <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                            Delete
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>03</td>
-                                        <td>VLZ-454</td>
-                                        <td>VLZ1400087438</td>
-                                        <td><a href="tables-datatables.html#!">Make a creating an account
-                                                profile</a></td>
-                                        <td>Tonya Noble</td>
-                                        <td>Admin</td>
-                                        <td>Tonya Noble</td>
-                                        <td>27 April, 2022</td>
-                                        <td><span class="badge bg-danger-subtle text-danger">Closed</span>
-                                        </td>
-                                        <td><span class="badge bg-success">Low</span></td>
-                                        <td>
-                                            <div class="dropdown d-inline-block">
-                                                <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="ri-more-fill align-middle"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li><a href="tables-datatables.html#!" class="dropdown-item"><i
-                                                                class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                            View</a></li>
-                                                    <li><a class="dropdown-item edit-item-btn"><i
-                                                                class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                            Edit</a></li>
-                                                    <li>
-                                                        <a class="dropdown-item remove-item-btn">
-                                                            <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                            Delete
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>04</td>
-                                        <td>VLZ-455</td>
-                                        <td>VLZ1400087748</td>
-                                        <td><a href="tables-datatables.html#!">Apologize for shopping
-                                                Error!</a></td>
-                                        <td>Joseph Parker</td>
-                                        <td>Alexis Clarke</td>
-                                        <td>Joseph Parker</td>
-                                        <td>14 June, 2021</td>
-                                        <td><span class="badge bg-warning-subtle text-warning">Inprogress</span>
-                                        </td>
-                                        <td><span class="badge bg-info">Medium</span></td>
-                                        <td>
-                                            <div class="dropdown d-inline-block">
-                                                <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="ri-more-fill align-middle"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li><a href="tables-datatables.html#!" class="dropdown-item"><i
-                                                                class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                            View</a></li>
-                                                    <li><a class="dropdown-item edit-item-btn"><i
-                                                                class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                            Edit</a></li>
-                                                    <li>
-                                                        <a class="dropdown-item remove-item-btn">
-                                                            <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                            Delete
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>07</td>
-                                        <td>VLZ-458</td>
-                                        <td>VLZ1400087785</td>
-                                        <td><a href="tables-datatables.html#!">Change email option process</a>
-                                        </td>
-                                        <td>James Morris</td>
-                                        <td>Admin</td>
-                                        <td>James Morris</td>
-                                        <td>12 March, 2022</td>
-                                        <td><span class="badge bg-primary-subtle text-primary">Open</span>
-                                        </td>
-                                        <td><span class="badge bg-danger">High</span></td>
-                                        <td>
-                                            <div class="dropdown d-inline-block">
-                                                <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="ri-more-fill align-middle"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li><a href="tables-datatables.html#!" class="dropdown-item"><i
-                                                                class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                            View</a></li>
-                                                    <li><a class="dropdown-item edit-item-btn"><i
-                                                                class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                            Edit</a></li>
-                                                    <li>
-                                                        <a class="dropdown-item remove-item-btn">
-                                                            <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                            Delete
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>09</td>
-                                        <td>VLZ-461</td>
-                                        <td>VLZ1400087179</td>
-                                        <td><a href="tables-datatables.html#!">Form submit issue</a></td>
-                                        <td>Grace Coles</td>
-                                        <td>Admin</td>
-                                        <td>Grace Coles</td>
-                                        <td>07 Jan, 2022</td>
-                                        <td><span class="badge bg-success-subtle text-success">New</span></td>
-                                        <td><span class="badge bg-danger">High</span></td>
-                                        <td>
-                                            <div class="dropdown d-inline-block">
-                                                <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="ri-more-fill align-middle"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li><a href="tables-datatables.html#!" class="dropdown-item"><i
-                                                                class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                            View</a></li>
-                                                    <li><a class="dropdown-item edit-item-btn"><i
-                                                                class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                            Edit</a></li>
-                                                    <li>
-                                                        <a class="dropdown-item remove-item-btn">
-                                                            <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                            Delete
-                                                        </a>
-                                                    </li>
-                                                </ul>
                                             </div>
                                         </td>
                                     </tr>

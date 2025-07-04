@@ -92,7 +92,7 @@
                                 <tbody>
                                     @foreach ($all as $item)
                                         <tr>
-                                            <td>{{ $item->nom_categorie }}</td>
+                                            <td><strong>{{ $item->nom_categorie }}</strong></td>
                                             <td>
                                                 <a href="#" class="btn btn-soft-info btn-sm" data-bs-toggle="modal"
                                                     data-bs-target=".edit-department{{ $item->id_categorie }}">Modifier</a>
