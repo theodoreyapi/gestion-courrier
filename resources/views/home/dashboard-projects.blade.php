@@ -99,12 +99,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div><!-- end card body -->
+                                </div>
                             </div>
-                        </div><!-- end col -->
+                        </div>
                     </div><!-- end row -->
 
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-xl-12">
                             <div class="card">
                                 <div class="card-header border-0 align-items-center d-flex">
@@ -176,7 +176,7 @@
                                 </div><!-- end card body -->
                             </div><!-- end card -->
                         </div><!-- end col -->
-                    </div><!-- end row -->
+                    </div><!-- end row --> --}}
                 </div><!-- end col -->
 
 

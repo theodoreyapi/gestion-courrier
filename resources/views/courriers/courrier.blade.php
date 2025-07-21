@@ -48,10 +48,12 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-header" style="align-self: flex-end;">
-                            <a href="{{ url('add-courrier') }}" type="button" class="btn btn-primary">Ajouter un
-                                courrier</a>
-                        </div>
+                        @if (Auth::user()->type == 'courrier')
+                            <div class="card-header" style="align-self: flex-end;">
+                                <a href="{{ url('add-courrier') }}" type="button" class="btn btn-primary">Ajouter un
+                                    courrier</a>
+                            </div>
+                        @endif
                         <div class="card-body">
                             <table id="scroll-horizontal" class="table nowrap align-middle" style="width:100%">
                                 <thead>
@@ -67,63 +69,79 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>01</td>
-                                        <td>VLZ-452</td>
-                                        <td>VLZ1400087402</td>
-                                        <td><a href="tables-datatables.html#!">Post launch reminder/ post
-                                                list</a></td>
-                                        <td>03 Oct, 2021</td>
-                                        <td>
-                                            <span class="badge bg-info-subtle text-info">Re-open</span>
-                                            <span class="badge bg-secondary-subtle text-secondary">On-Hold</span>
-                                            <span class="badge bg-warning-subtle text-warning">Inprogress</span>
-                                            <span class="badge bg-primary-subtle text-primary">Open</span>
-                                            <span class="badge bg-success-subtle text-success">New</span>
-                                            <span class="badge bg-danger-subtle text-danger">Closed</span>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-danger">High</span>
-                                            <span class="badge bg-success">Low</span>
-                                            <span class="badge bg-info">Medium</span>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-soft-dark btn-sm">
-                                                Voir
-                                            </a>
-                                            <a href="#" class="btn btn-soft-secondary btn-sm">
-                                                Modifier
-                                            </a>
-                                            <a href="#" class="btn btn-soft-danger btn-sm" data-bs-toggle="modal"
-                                                data-bs-target=".bs-example-modal-center">
-                                                Supprimer
-                                            </a>
-                                            <div class="modal fade bs-example-modal-center" tabindex="-1"
-                                                aria-labelledby="mySmallModalLabel" aria-hidden="true"
-                                                style="display: none;">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-body text-center p-5">
-                                                            <lord-icon src="https://cdn.lordicon.com/hrqwmuhr.json"
-                                                                trigger="loop" colors="primary:#121331,secondary:#08a88a"
-                                                                style="width:120px;height:120px"></lord-icon>
-                                                            <div class="mt-4">
-                                                                <h4 class="mb-3">Oups!</h4>
-                                                                <p class="text-muted mb-4"> Êtes-vous sûre de vouloir
-                                                                    supprimer?</p>
-                                                                <div class="hstack gap-2 justify-content-center">
-                                                                    <button type="button" class="btn btn-light"
-                                                                        data-bs-dismiss="modal">Annuler</button>
-                                                                    <a href="javascript:void(0);"
-                                                                        class="btn btn-danger">Supprimer</a>
+                                    @foreach ($courrier as $item)
+                                        <tr>
+                                            <td>{{ $item->nom_bureau }}</td>
+                                            <td>{{ $item->nom_categorie }}</td>
+                                            <td>{{ $item->nature_niveau }}</td>
+                                            <td><a href="#">{{ $item->name }} {{ $item->last_name }}</a></td>
+                                            <td>{{ $item->created_at->format('d M Y') }}</td>
+                                            <td>
+                                                @if ($item->status_courrier == 'initial')
+                                                    <span class="badge bg-success-subtle text-success">Nouveau</span>
+                                                @elseif ($item->status_courrier == 'traitement')
+                                                    <span class="badge bg-warning-subtle text-warning">En traxitement</span>
+                                                @elseif ($item->status_courrier == 'termine')
+                                                    <span class="badge bg-secondary-subtle text-secondary">Terminé</span>
+                                                @else
+                                                    <span class="badge bg-danger-subtle text-danger">Annulé</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($item->delai_courrier == 'EXTREME URGENCE')
+                                                    <span class="badge bg-danger">EXTREME URGENCE</span>
+                                                @elseif ($item->delai_courrier == '48H')
+                                                    <span class="badge bg-secondary">48H</span>
+                                                @else
+                                                    <span class="badge bg-info">72H</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('courrier.show', $item->id_courrier) }}"
+                                                    class="btn btn-soft-dark btn-sm">
+                                                    Voir
+                                                </a>
+                                                {{-- <a href="#" class="btn btn-soft-secondary btn-sm">
+                                                    Modifier
+                                                </a> --}}
+                                                <a href="#" class="btn btn-soft-danger btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target=".bs-example-modal-center{{ $item->id_courrier }}">
+                                                    Supprimer
+                                                </a>
+                                                <div class="modal fade bs-example-modal-center{{ $item->id_courrier }}"
+                                                    tabindex="-1" aria-labelledby="mySmallModalLabel" aria-hidden="true"
+                                                    style="display: none;">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body text-center p-5">
+                                                                <lord-icon src="https://cdn.lordicon.com/hrqwmuhr.json"
+                                                                    trigger="loop"
+                                                                    colors="primary:#121331,secondary:#08a88a"
+                                                                    style="width:120px;height:120px"></lord-icon>
+                                                                <div class="mt-4">
+                                                                    <h4 class="mb-3">Oups!</h4>
+                                                                    <p class="text-muted mb-4"> Êtes-vous sûre de vouloir
+                                                                        supprimer?</p>
+                                                                    <form
+                                                                        action="{{ route('courrier.destroy', $item->id_courrier) }}"
+                                                                        method="POST">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <div class="hstack gap-2 justify-content-center">
+                                                                            <button type="button" class="btn btn-light"
+                                                                                data-bs-dismiss="modal">Annuler</button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger">Supprimer</button>
+                                                                        </div>
+                                                                    </form>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

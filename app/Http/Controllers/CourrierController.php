@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bureau;
 use App\Models\Courrier;
 use App\Models\Images;
 use Illuminate\Http\Request;
@@ -15,7 +16,22 @@ class CourrierController extends Controller
      */
     public function index()
     {
-        return view('courriers.courrier');
+        if (Auth::user()->type == 'dg' || Auth::user()->type == 'admin' || Auth::user()->type == 'courrier') {
+            $courrier = Courrier::join('categorie', 'courrier.categorie_id', '=', 'categorie.id_categorie')
+                ->join('bureau', 'courrier.bureau_id', '=', 'bureau.id_bureau')
+                ->join('users', 'courrier.user_id', '=', 'users.id')
+                ->select('courrier.*', 'categorie.nom_categorie', 'bureau.nom_bureau', 'users.name', 'users.last_name')
+                ->get();
+        } else {
+            $courrier = Courrier::join('categorie', 'courrier.categorie_id', '=', 'categorie.id_categorie')
+                ->join('bureau', 'courrier.bureau_id', '=', 'bureau.id_bureau')
+                ->join('users', 'courrier.user_id', '=', 'users.id')
+                ->where('courrier.bureau_id', '=', Auth::user()->bureau_id)
+                ->select('courrier.*', 'categorie.nom_categorie', 'bureau.nom_bureau', 'users.name', 'users.last_name')
+                ->get();
+        }
+
+        return view('courriers.courrier', compact('courrier'));
     }
 
     /**
@@ -86,7 +102,18 @@ class CourrierController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $courrier = Courrier::join('categorie', 'categorie.id_categorie', '=', 'courrier.categorie_id')
+            ->join('bureau', 'bureau.id_bureau', '=', 'courrier.bureau_id')
+            ->join('users', 'users.id', '=', 'courrier.user_id')
+            ->where('courrier.id_courrier', '=', $id)
+            ->select('courrier.*', 'categorie.nom_categorie', 'bureau.nom_bureau', 'users.name', 'users.last_name')
+            ->first();
+
+        $images = Images::where('courrier_id', '=', $id)->get();
+
+        $departement = Bureau::all();
+
+        return view('courriers.view-courrier', compact('courrier', 'images', 'departement'));
     }
 
     /**
@@ -102,7 +129,57 @@ class CourrierController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $rules = [
+            'departement' => 'required',
+        ];
+
+        $customMessages = [
+            'departement.required' => "Veuillez choisir le départment pour le transfert.",
+        ];
+
+        $request->validate($rules, $customMessages);
+
+        $courrier = Courrier::findOrFail($id);
+        $courrier->bureau_id = $request->departement;
+        $courrier->status_courrier = 'traitement';
+        $courrier->save();
+
+        return back()->with('succes', "Le transfert a été effectué");
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function updateNote(Request $request, string $id)
+    {
+        $rules = [
+            'note' => 'required',
+        ];
+
+        $customMessages = [
+            'note.required' => "Veuillez saisir la note.",
+        ];
+
+        $request->validate($rules, $customMessages);
+
+        $courrier = Courrier::findOrFail($id);
+        $courrier->note_courrier = $request->note;
+        $courrier->status_courrier = 'traitement';
+        $courrier->save();
+
+        return back()->with('succes', "La note a été effectué");
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function signer($id)
+    {
+        $courrier = Courrier::findOrFail($id);
+        $courrier->status_courrier = 'termine';
+        $courrier->save();
+
+        return back()->with('succes', "Le courrier a été signé");
     }
 
     /**
@@ -110,6 +187,8 @@ class CourrierController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Courrier::findOrFail($id)->delete();
+
+        return back()->with('succes', "La suppression a été effectué");
     }
 }

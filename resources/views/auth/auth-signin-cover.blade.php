@@ -85,13 +85,14 @@
 
                                 <div class="col-lg-6">
                                     <div class="p-lg-5 p-4">
+                                        @include('layouts.status')
                                         <div>
                                             <h5 class="text-primary">Content de te revoir !</h5>
                                             <p class="text-muted">Connectez-vous pour continuer vers GS.</p>
                                         </div>
 
                                         <div class="mt-4">
-                                            <form action="#" method="post">
+                                            <form action="{{ url('custom-login') }}" method="post">
                                                 @csrf
                                                 <div class="mb-3">
                                                     <label for="username" class="form-label">Adresse e-mail</label>
@@ -100,13 +101,14 @@
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <div class="float-end">
+                                                    {{-- <div class="float-end">
                                                         <a href="{{ url('forgot') }}" class="text-muted">Mot de passe
                                                             oublié?</a>
-                                                    </div>
+                                                    </div> --}}
                                                     <label class="form-label" for="password-input">Mot de passe</label>
                                                     <div class="position-relative auth-pass-inputgroup mb-3">
-                                                        <input type="password" class="form-control pe-5 password-input"
+                                                        <input type="password" required name="password"
+                                                            class="form-control pe-5 password-input"
                                                             placeholder="Entrez votre mot de passe" id="password-input">
                                                         <button
                                                             class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon material-shadow-none"

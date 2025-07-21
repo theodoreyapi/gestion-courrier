@@ -28,58 +28,64 @@
             <div id="two-column-menu">
             </div>
             <ul class="navbar-nav" id="navbar-nav">
-                <li class="menu-title"><span data-key="t-menu">Menu</span></li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link {{ Request::is('index') ? 'collapsed active' : '' }}"
-                        href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                        aria-controls="sidebarDashboards">
-                        <i class="ri-dashboard-2-line"></i>
-                        <span data-key="t-dashboards">Tableau de bord</span>
-                    </a>
-                    <div class="collapse menu-dropdown {{ Request::is('index') ? 'show' : '' }}" id="sidebarDashboards">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ url('index') }}"
-                                    class="nav-link {{ Request::is('index') ? 'active' : '' }}" data-key="t-projects">
-                                    Tableau de bord </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                @if (Auth::user()->type == 'dg' || Auth::user()->type == 'admin')
+                    <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link {{ Request::is('index') ? 'collapsed active' : '' }}"
+                            href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                            aria-controls="sidebarDashboards">
+                            <i class="ri-dashboard-2-line"></i>
+                            <span data-key="t-dashboards">Tableau de bord</span>
+                        </a>
+                        <div class="collapse menu-dropdown {{ Request::is('index') ? 'show' : '' }}"
+                            id="sidebarDashboards">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="{{ url('index') }}"
+                                        class="nav-link {{ Request::is('index') ? 'active' : '' }}"
+                                        data-key="t-projects">
+                                        Tableau de bord </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                @endif
+                @if (Auth::user()->type == 'approprie' ||
+                        Auth::user()->type == 'dg' ||
+                        Auth::user()->type == 'admin' ||
+                        Auth::user()->type == 'courrier')
+                    <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Pages</span>
+                    </li>
 
-                <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Pages</span>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link menu-link {{ Request::is('courrier') ? 'active' : '' }}{{ Request::is('add-courrier') ? 'active' : '' }}"
-                        href="{{ url('courrier') }}">
-                        <i class="ri-honour-line"></i> <span data-key="t-widgets">Courriers</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link {{ Request::is('categorie') ? 'active' : '' }}" href="{{ url('categorie') }}">
-                        <i class="ri-honour-line"></i> <span data-key="t-widgets">Catégorie traitement</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link {{ Request::is('departement') ? 'active' : '' }}" href="{{ url('departement') }}">
-                        <i class="ri-honour-line"></i> <span data-key="t-widgets">Département</span>
-                    </a>
-                </li>
-
-                <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Paramètres</span>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="widgets.html">
-                        <i class="ri-honour-line"></i> <span data-key="t-widgets">Paramètres</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="widgets.html">
-                        <i class="ri-honour-line"></i> <span data-key="t-widgets">Utilisateurs</span>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link {{ Request::is('courrier') ? 'active' : '' }}{{ Request::is('add-courrier') ? 'active' : '' }}"
+                            href="{{ url('courrier') }}">
+                            <i class="ri-honour-line"></i> <span data-key="t-widgets">Courriers</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link {{ Request::is('categorie') ? 'active' : '' }}"
+                            href="{{ url('categorie') }}">
+                            <i class="ri-honour-line"></i> <span data-key="t-widgets">Catégorie traitement</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link {{ Request::is('departement') ? 'active' : '' }}"
+                            href="{{ url('departement') }}">
+                            <i class="ri-honour-line"></i> <span data-key="t-widgets">Département</span>
+                        </a>
+                    </li>
+                @endif
+                @if (Auth::user()->type == 'admin')
+                    <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Paramètres</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link {{ Request::is('users') ? 'active' : '' }}"
+                            href="{{ url('users') }}">
+                            <i class="ri-honour-line"></i> <span data-key="t-widgets">Utilisateurs</span>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>
