@@ -8,6 +8,8 @@ class Courrier extends Model
 {
     protected $fillable = [
         'nombre_courrier',
+        'objet_courrier',
+        'numero_courrier',
         'nature_niveau',
         'note_courrier',
         'delai_courrier',

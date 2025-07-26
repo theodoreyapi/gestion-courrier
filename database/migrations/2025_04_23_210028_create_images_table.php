@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->id('id_image')->primary();
             $table->string('fichier_image');
-            $table->unsignedBigInteger('courrier_id')->nullable();
-            $table->foreign('courrier_id')->references('id_courrier')->on('courrier');
+            $table->unsignedBigInteger('courrier_id');
+            $table->foreign('courrier_id')->references('id_courrier')->on('courrier')->onDelete('cascade');
             $table->timestamps();
         });
     }

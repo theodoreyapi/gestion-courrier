@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Courrier;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,7 +43,12 @@ class CustomAuthController extends Controller
     public function dashboard()
     {
         if (Auth::user()->type == 'admin' || Auth::user()->type == 'dg') {
-            return view('home.dashboard-projects');
+
+            $total = Courrier::count();
+            $encours = Courrier::where('status_courrier', 'traitement')->count();
+            $traite = Courrier::where('status_courrier', 'termine')->count();
+
+            return view('home.dashboard-projects', compact('total', 'encours', 'traite'));
         } else if (Auth::user()->type == 'courrier' || Auth::user()->type == 'approprie') {
             return redirect()->intended('courrier');
         } else {

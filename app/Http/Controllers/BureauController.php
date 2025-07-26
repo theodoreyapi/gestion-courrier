@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bureau;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class BureauController extends Controller
@@ -13,6 +14,10 @@ class BureauController extends Controller
      */
     public function index()
     {
+        if (!Auth::check()) {
+            return view('auth.auth-signin-cover');
+        }
+
         $all = Bureau::all();
         return view('departements.bureau', compact('all'));
     }

@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CourrierNotif;
+use App\Mail\CourrierSigne;
 use App\Models\Bureau;
 use App\Models\Courrier;
 use App\Models\Images;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class CourrierController extends Controller
@@ -16,6 +20,10 @@ class CourrierController extends Controller
      */
     public function index()
     {
+        if (!Auth::check()) {
+            return view('auth.auth-signin-cover');
+        }
+
         if (Auth::user()->type == 'dg' || Auth::user()->type == 'admin' || Auth::user()->type == 'courrier') {
             $courrier = Courrier::join('categorie', 'courrier.categorie_id', '=', 'categorie.id_categorie')
                 ->join('bureau', 'courrier.bureau_id', '=', 'bureau.id_bureau')
@@ -48,11 +56,13 @@ class CourrierController extends Controller
     public function store(Request $request)
     {
         $rules = [
+            'numero' => 'nullable',
+            'objet' => 'nullable',
             'destination' => 'required',
             'traitement' => 'required',
-            'nature' => 'required',
-            'delais' => 'required',
-            'notes' => 'required',
+            'nature' => 'nullable',
+            'delais' => 'nullable',
+            'notes' => 'nullable',
             'file' => 'required|array',
             'file.*' => 'file|mimes:pdf,jpg,jpeg,png,doc,docx|max:20480',
         ];
@@ -60,9 +70,11 @@ class CourrierController extends Controller
         $customMessages = [
             'destination.required' => "Veuillez saisir la désignation du courrier.",
             'traitement.required' => "Veuillez sélectionner la catégorie de traitement du courrier.",
-            'nature.required' => "Veuillez saisir la nature du courrier.",
-            'delais.required' => "Veuillez sélectionner le délai de traitement.",
-            'notes.required' => "Veuillez saisir une note sur le traitement du courrier.",
+            'objet.nullable' => "Veuillez saisir l'objet du courrier.",
+            'numero.nullable' => "Veuillez saisir le nnuméro du courrier.",
+            'nature.nullable' => "Veuillez saisir la nature du courrier.",
+            'delais.nullable' => "Veuillez sélectionner le délai de traitement.",
+            'notes.nullable' => "Veuillez saisir une note sur le traitement du courrier.",
             'file.required' => "Veuillez sélectionner au moins un fichier.",
             'file.*.file' => "Chaque élément doit être un fichier valide.",
             'file.*.mimes' => "Le type de fichier est invalide (pdf, jpg, png, doc...).",
@@ -73,10 +85,12 @@ class CourrierController extends Controller
 
         $courrier = new Courrier();
         $courrier->nombre_courrier = count($request->file);
-        $courrier->nature_niveau = $request->nature;
-        $courrier->note_courrier = $request->notes;
-        $courrier->delai_courrier = $request->delais;
-        $courrier->user_id = 1;
+        $courrier->numero_courrier = $request->numero ?? '';
+        $courrier->objet_courrier = $request->objet ?? '';
+        $courrier->nature_niveau = $request->nature ?? '';
+        $courrier->note_courrier = $request->notes ?? '';
+        $courrier->delai_courrier = $request->delais ?? '';
+        $courrier->user_id = Auth::user()->id;
         $courrier->bureau_id = $request->destination;
         $courrier->categorie_id = $request->traitement;
         if ($courrier->save()) {
@@ -89,6 +103,14 @@ class CourrierController extends Controller
                 $image->fichier_image = $filename;
                 $image->courrier_id = $courrier->id_courrier;
                 $image->save();
+            }
+
+            // Récupérer les utilisateurs du département destinataire
+            $users = User::where('bureau_id', $courrier->bureau_id)->get();
+
+            // Envoyer un mail à chaque utilisateur
+            foreach ($users as $user) {
+                Mail::to($user->email)->send(new CourrierNotif($courrier, $user));
             }
 
             return back()->with('succes',  "Le courrier a été initié");
@@ -144,6 +166,14 @@ class CourrierController extends Controller
         $courrier->status_courrier = 'traitement';
         $courrier->save();
 
+        // Récupérer les utilisateurs du département destinataire
+        $users = User::where('bureau_id', $courrier->bureau_id)->get();
+
+        // Envoyer un mail à chaque utilisateur
+        foreach ($users as $user) {
+            Mail::to($user->email)->send(new CourrierNotif($courrier, $user));
+        }
+
         return back()->with('succes', "Le transfert a été effectué");
     }
 
@@ -178,6 +208,14 @@ class CourrierController extends Controller
         $courrier = Courrier::findOrFail($id);
         $courrier->status_courrier = 'termine';
         $courrier->save();
+
+        // Récupérer les utilisateurs du département destinataire
+        $users = User::where('bureau_id', $courrier->bureau_id)->get();
+
+        // Envoyer un mail à chaque utilisateur
+        foreach ($users as $user) {
+            Mail::to($user->email)->send(new CourrierSigne($courrier, $user));
+        }
 
         return back()->with('succes', "Le courrier a été signé");
     }

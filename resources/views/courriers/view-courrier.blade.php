@@ -67,6 +67,14 @@
                                 @csrf
                                 <div class="row g-4">
                                     <div class="col-lg-6">
+                                        <h6 class="fw-semibold">Objet</h6>
+                                        <span>{{ $courrier->objet_courrier }}</span>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <h6 class="fw-semibold">Numéro</h6>
+                                        <span>{{ $courrier->numero_courrier }}</span>
+                                    </div>
+                                    <div class="col-lg-6">
                                         <h6 class="fw-semibold">Destination</h6>
                                         <span>{{ $courrier->nom_bureau }}</span>
                                     </div>

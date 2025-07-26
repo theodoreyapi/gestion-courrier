@@ -48,11 +48,12 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-header" style="align-self: flex-end;">
-                            <a href="#" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target=".add-department">Ajouter une catégorie</a>
-                        </div>
-
+                        @if (Auth::user()->type == 'admin')
+                            <div class="card-header" style="align-self: flex-end;">
+                                <a href="#" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target=".add-department">Ajouter une catégorie</a>
+                            </div>
+                        @endif
                         <div class="modal fade add-department" tabindex="-1" aria-labelledby="mySmallModalLabel"
                             aria-hidden="true" style="display: none;">
                             <form action="{{ route('categorie.store') }}" method="POST">

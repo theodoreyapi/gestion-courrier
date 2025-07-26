@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Models\Bureau;
 use App\Models\Categorie;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 Route::get('index', [CustomAuthController::class, 'dashboard']);
@@ -21,6 +22,16 @@ Route::get('/', function () {
     return view('auth.auth-signin-cover');
 });
 
+Route::get('/test-mail', function () {
+    Mail::raw('Test de mail depuis Laravel', function ($message) {
+        $message->to('theodoreyapi@gmail.com')
+                ->subject('Test Laravel');
+    });
+
+    return 'Mail envoyé';
+});
+
+
 // Route::get('/index', function () {
 //     return view('home.dashboard-projects');
 // });
@@ -32,12 +43,17 @@ Route::get('/password', function () {
 });
 
 Route::get('add-courrier', function () {
+    if (!Auth::check()) {
+        return view('auth.auth-signin-cover');
+    }
+
     $categorie = Categorie::all();
     $bureau = Bureau::all();
     return view('courriers.add-courrier', compact('categorie', 'bureau'));
 });
-Route::resource('users', UserController::class);
+Route::resource('userss', UserController::class);
 Route::resource('courrier', CourrierController::class);
+Route::post('users/{id}', [UserController::class, 'updateUser']);
 Route::post('note/{id}', [CourrierController::class, 'updateNote']);
 Route::get('signe/{id}', [CourrierController::class, 'signer']);
 Route::resource('departement', BureauController::class);

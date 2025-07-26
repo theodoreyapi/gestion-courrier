@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('courrier', function (Blueprint $table) {
             $table->id('id_courrier')->primary();
+            $table->string('objet_courrier')->nullable();
+            $table->string('numero_courrier')->nullable();
             $table->integer('nombre_courrier')->default(0);
-            $table->string('nature_niveau');
+            $table->string('nature_niveau')->nullable();
             $table->longText('note_courrier')->nullable();
-            $table->string('delai_courrier');
+            $table->string('delai_courrier')->nullable();
             $table->string('status_courrier')->comment('initial, traitement, termine, annule')->default('initial');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');

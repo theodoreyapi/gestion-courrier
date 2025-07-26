@@ -48,7 +48,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        @if (Auth::user()->type == 'courrier')
+                        @if (Auth::user()->type == 'courrier' || Auth::user()->type == 'dg')
                             <div class="card-header" style="align-self: flex-end;">
                                 <a href="{{ url('add-courrier') }}" type="button" class="btn btn-primary">Ajouter un
                                     courrier</a>
@@ -83,8 +83,10 @@
                                                     <span class="badge bg-warning-subtle text-warning">En traxitement</span>
                                                 @elseif ($item->status_courrier == 'termine')
                                                     <span class="badge bg-secondary-subtle text-secondary">Terminé</span>
-                                                @else
+                                                @elseif ($item->status_courrier == 'annule')
                                                     <span class="badge bg-danger-subtle text-danger">Annulé</span>
+                                                @else
+                                                    <span class="badge bg-info-subtle text-info">Initié</span>
                                                 @endif
                                             </td>
                                             <td>

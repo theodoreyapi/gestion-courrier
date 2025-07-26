@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categorie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class CategorieController extends Controller
@@ -13,6 +14,10 @@ class CategorieController extends Controller
      */
     public function index()
     {
+        if (!Auth::check()) {
+            return view('auth.auth-signin-cover');
+        }
+
         $all = Categorie::all();
         return view('categories.categorie', compact('all'));
     }

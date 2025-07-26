@@ -67,6 +67,20 @@
                                 id="courrier-form">
                                 @csrf
                                 <div class="row g-4">
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="firstNameinput" class="form-label">Objet</label>
+                                            <input name="objet" type="text" class="form-control"
+                                                placeholder="" id="firstNameinput">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="firstNameinput" class="form-label">Numéro</label>
+                                            <input name="numero" type="text" class="form-control"
+                                                placeholder="" id="firstNameinput">
+                                        </div>
+                                    </div>
                                     <div class="col-lg-6">
                                         <h6 class="fw-semibold">Destination</h6>
                                         <select required class="js-example-basic-single" name="destination">
@@ -117,7 +131,7 @@
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="firstNameinput" class="form-label">Nature des pièces jointes</label>
-                                            <input required name="nature" type="text" class="form-control"
+                                            <input name="nature" type="text" class="form-control"
                                                 placeholder="Ex: Contrat, Facture, Rapport..." id="firstNameinput">
                                         </div>
                                     </div>
@@ -125,7 +139,7 @@
                                         <div class="mb-3">
                                             <label for="ForminputState" class="form-label">Délais de traitement du
                                                 courrier</label>
-                                            <select name="delais" required id="ForminputState" class="form-select">
+                                            <select name="delais" id="ForminputState" class="form-select">
                                                 <option value="">Choisir...</option>
                                                 <option value="EXTREME URGENCE">EXTREME URGENCE</option>
                                                 <option value="48H">48H</option>

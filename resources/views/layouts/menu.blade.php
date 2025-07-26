@@ -63,25 +63,27 @@
                             <i class="ri-honour-line"></i> <span data-key="t-widgets">Courriers</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link menu-link {{ Request::is('categorie') ? 'active' : '' }}"
-                            href="{{ url('categorie') }}">
-                            <i class="ri-honour-line"></i> <span data-key="t-widgets">Catégorie traitement</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link menu-link {{ Request::is('departement') ? 'active' : '' }}"
-                            href="{{ url('departement') }}">
-                            <i class="ri-honour-line"></i> <span data-key="t-widgets">Département</span>
-                        </a>
-                    </li>
+                    @if (Auth::user()->type == 'admin' || Auth::user()->type == 'dg')
+                        <li class="nav-item">
+                            <a class="nav-link menu-link {{ Request::is('categorie') ? 'active' : '' }}"
+                                href="{{ url('categorie') }}">
+                                <i class="ri-honour-line"></i> <span data-key="t-widgets">Catégorie traitement</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link {{ Request::is('departement') ? 'active' : '' }}"
+                                href="{{ url('departement') }}">
+                                <i class="ri-honour-line"></i> <span data-key="t-widgets">Département</span>
+                            </a>
+                        </li>
+                    @endif
                 @endif
                 @if (Auth::user()->type == 'admin')
                     <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Paramètres</span>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link {{ Request::is('users') ? 'active' : '' }}"
-                            href="{{ url('users') }}">
+                        <a class="nav-link menu-link {{ Request::is('userss') ? 'active' : '' }}"
+                            href="{{ url('userss') }}">
                             <i class="ri-honour-line"></i> <span data-key="t-widgets">Utilisateurs</span>
                         </a>
                     </li>

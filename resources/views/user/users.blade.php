@@ -56,7 +56,7 @@
 
                         <div class="modal fade add-department" tabindex="-1" aria-labelledby="mySmallModalLabel"
                             aria-hidden="true" style="display: none;">
-                            <form action="{{ route('users.store') }}" method="POST">
+                            <form action="{{ route('userss.store') }}" method="POST">
                                 @csrf
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
@@ -169,7 +169,7 @@
                                                 <div class="modal fade edit-department{{ $item->id }}" tabindex="-1"
                                                     aria-labelledby="mySmallModalLabel" aria-hidden="true"
                                                     style="display: none;">
-                                                    <form action="{{ route('users.update', $item->id) }}" method="POST">
+                                                    <form action="{{ route('userss.update', $item->id) }}" method="POST">
                                                         @csrf
                                                         @method('PATCH')
                                                         <div class="modal-dialog modal-dialog-centered">
@@ -285,7 +285,7 @@
                                                                     trigger="loop"
                                                                     colors="primary:#121331,secondary:#08a88a"
                                                                     style="width:120px;height:120px"></lord-icon>
-                                                                <form action="{{ route('users.destroy', $item->id) }}"
+                                                                <form action="{{ route('userss.destroy', $item->id) }}"
                                                                     method="post">
                                                                     @csrf
                                                                     @method('DELETE')
