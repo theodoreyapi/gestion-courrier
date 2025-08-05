@@ -55,67 +55,73 @@ class CourrierController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
-            'numero' => 'nullable',
-            'objet' => 'nullable',
-            'destination' => 'required',
-            'traitement' => 'required',
-            'nature' => 'nullable',
-            'delais' => 'nullable',
-            'notes' => 'nullable',
-            'file' => 'required|array',
-            'file.*' => 'file|mimes:pdf,jpg,jpeg,png,doc,docx|max:20480',
-        ];
+        try {
+            $rules = [
+                'numero' => 'nullable',
+                'objet' => 'nullable',
+                'destination' => 'required',
+                'traitement' => 'required',
+                'nature' => 'nullable',
+                'delais' => 'nullable',
+                'notes' => 'nullable',
+                'file' => 'required|array',
+                'file.*' => 'file|mimes:pdf,jpg,jpeg,png,doc,docx|max:20480',
+            ];
 
-        $customMessages = [
-            'destination.required' => "Veuillez saisir la désignation du courrier.",
-            'traitement.required' => "Veuillez sélectionner la catégorie de traitement du courrier.",
-            'objet.nullable' => "Veuillez saisir l'objet du courrier.",
-            'numero.nullable' => "Veuillez saisir le nnuméro du courrier.",
-            'nature.nullable' => "Veuillez saisir la nature du courrier.",
-            'delais.nullable' => "Veuillez sélectionner le délai de traitement.",
-            'notes.nullable' => "Veuillez saisir une note sur le traitement du courrier.",
-            'file.required' => "Veuillez sélectionner au moins un fichier.",
-            'file.*.file' => "Chaque élément doit être un fichier valide.",
-            'file.*.mimes' => "Le type de fichier est invalide (pdf, jpg, png, doc...).",
-            'file.*.max' => "Le fichier ne doit pas dépasser 20 Mo.",
-        ];
+            $customMessages = [
+                'destination.required' => "Veuillez saisir la désignation du courrier.",
+                'traitement.required' => "Veuillez sélectionner la catégorie de traitement du courrier.",
+                'objet.nullable' => "Veuillez saisir l'objet du courrier.",
+                'numero.nullable' => "Veuillez saisir le nnuméro du courrier.",
+                'nature.nullable' => "Veuillez saisir la nature du courrier.",
+                'delais.nullable' => "Veuillez sélectionner le délai de traitement.",
+                'notes.nullable' => "Veuillez saisir une note sur le traitement du courrier.",
+                'file.required' => "Veuillez sélectionner au moins un fichier.",
+                'file.*.file' => "Chaque élément doit être un fichier valide.",
+                'file.*.mimes' => "Le type de fichier est invalide (pdf, jpg, png, doc...).",
+                'file.*.max' => "Le fichier ne doit pas dépasser 20 Mo.",
+            ];
 
-        $request->validate($rules, $customMessages);
+            $request->validate($rules, $customMessages);
 
-        $courrier = new Courrier();
-        $courrier->nombre_courrier = count($request->file);
-        $courrier->numero_courrier = $request->numero ?? '';
-        $courrier->objet_courrier = $request->objet ?? '';
-        $courrier->nature_niveau = $request->nature ?? '';
-        $courrier->note_courrier = $request->notes ?? '';
-        $courrier->delai_courrier = $request->delais ?? '';
-        $courrier->user_id = Auth::user()->id;
-        $courrier->bureau_id = $request->destination;
-        $courrier->categorie_id = $request->traitement;
-        if ($courrier->save()) {
+            $courrier = new Courrier();
+            $courrier->nombre_courrier = count($request->file);
+            $courrier->numero_courrier = $request->numero ?? '';
+            $courrier->objet_courrier = $request->objet ?? '';
+            $courrier->nature_niveau = $request->nature ?? '';
+            $courrier->note_courrier = $request->notes ?? '';
+            $courrier->delai_courrier = $request->delais ?? '';
+            $courrier->user_id = Auth::user()->id;
+            $courrier->bureau_id = $request->destination;
+            $courrier->categorie_id = $request->traitement;
+            if ($courrier->save()) {
 
-            foreach ($request->file('file') as $file) {
-                $filename = 'file_courrier_' . time() . '_' . Str::random(6) . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('/courriers'), $filename);
+                foreach ($request->file('file') as $file) {
+                    $filename = 'file_courrier_' . time() . '_' . Str::random(6) . '.' . $file->getClientOriginalExtension();
+                    $file->move(public_path('/courriers'), $filename);
 
-                $image = new Images();
-                $image->fichier_image = $filename;
-                $image->courrier_id = $courrier->id_courrier;
-                $image->save();
+                    $image = new Images();
+                    $image->fichier_image = $filename;
+                    $image->courrier_id = $courrier->id_courrier;
+                    $image->save();
+                }
+
+                // Récupérer les utilisateurs du département destinataire
+                $users = User::where('bureau_id', $courrier->bureau_id)->get();
+
+                // Envoyer un mail à chaque utilisateur
+                foreach ($users as $user) {
+                    Mail::to($user->email)->send(new CourrierNotif($courrier, $user));
+                }
+
+                return response()->json(['succes' => "Le courrier a été initié"], 200);
+            } else {
+                return response()->json(['message' => "Impossible d'initier le courrier"], 500);
             }
-
-            // Récupérer les utilisateurs du département destinataire
-            $users = User::where('bureau_id', $courrier->bureau_id)->get();
-
-            // Envoyer un mail à chaque utilisateur
-            foreach ($users as $user) {
-                Mail::to($user->email)->send(new CourrierNotif($courrier, $user));
-            }
-
-            return back()->with('succes',  "Le courrier a été initié");
-        } else {
-            return back()->withErrors(["Impossible d'initier le courrier. Veuillez réessayer!!"]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['message' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 

@@ -18,6 +18,61 @@
 @endpush
 
 @push('scripts')
+    <script>
+        document.getElementById("courrier-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            let form = document.getElementById("courrier-form");
+            let formData = new FormData(form);
+            let loader = document.getElementById("loader");
+            let messageBox = document.getElementById("message");
+            let submitBtn = form.querySelector("button[type='submit']");
+
+            // Reset message
+            messageBox.innerHTML = "";
+
+            // Loader visible et bouton désactivé
+            loader.style.display = "block";
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Envoi en cours...";
+
+            fetch("{{ route('courrier.store') }}", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                        "Accept": "application/json"
+                    },
+                    credentials: "include"
+                })
+                .then(async response => {
+                    loader.style.display = "none";
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "Soumettre";
+
+                    let data;
+                    try {
+                        data = await response.json();
+                    } catch (err) {
+                        throw new Error("Réponse non valide reçue du serveur");
+                    }
+
+                    if (response.ok && data.succes) {
+                        messageBox.innerHTML = `<div class="alert alert-success">${data.succes}</div>`;
+                        form.reset();
+                    } else {
+                        throw new Error(data.message || "Erreur lors de l'envoi");
+                    }
+                })
+                .catch(error => {
+                    loader.style.display = "none";
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "Soumettre";
+                    messageBox.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
+                });
+        });
+    </script>
+
     <script src="{{ URL::asset('') }}assets/libs/dropzone/dropzone-min.js"></script>
     <script src="{{ URL::asset('') }}assets/libs/filepond/filepond.min.js"></script>
     <script src="{{ URL::asset('') }}assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js">
@@ -55,7 +110,7 @@
             </div>
 
             @include('layouts.status')
-
+            <div id="message"></div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
@@ -63,22 +118,21 @@
                             <h5 class="card-title mb-0">Initier un nouveau traitement</h5>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('courrier.store') }}" method="POST" enctype="multipart/form-data"
-                                id="courrier-form">
+                            <form enctype="multipart/form-data" id="courrier-form">
                                 @csrf
                                 <div class="row g-4">
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="firstNameinput" class="form-label">Objet</label>
-                                            <input name="objet" type="text" class="form-control"
-                                                placeholder="" id="firstNameinput">
+                                            <input name="objet" type="text" class="form-control" placeholder=""
+                                                id="firstNameinput">
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="firstNameinput" class="form-label">Numéro</label>
-                                            <input name="numero" type="text" class="form-control"
-                                                placeholder="" id="firstNameinput">
+                                            <input name="numero" type="text" class="form-control" placeholder=""
+                                                id="firstNameinput">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -154,7 +208,7 @@
                                                 id="" cols="30" rows="10"></textarea>
                                         </div>
                                     </div>
-                                    <label class="form-label fw-bold">Fichiers à joindre</label>
+                                    <span class="form-label fw-bold">Fichiers à joindre</span>
                                     <div class="dropzone" id="file-dropzone">
                                         <div class="fallback">
                                             <input name="file[]" type="file" multiple />
@@ -162,6 +216,13 @@
                                     </div>
                                     <br>
                                     <br>
+                                    <div id="loader" style="display:none; text-align:center; margin-top:15px;">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Chargement...</span>
+                                        </div>
+                                        <p>Envoi en cours...</p>
+                                    </div>
+
                                     <div class="col-lg-12 mt-4">
                                         <div class="text-end">
                                             <button type="submit" class="btn btn-primary">Soumettre</button>
